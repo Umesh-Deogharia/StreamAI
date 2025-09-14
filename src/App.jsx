@@ -1,8 +1,9 @@
 import React from 'react'
+import Body from './component/Body'
 
 function App() {
   return (
-    <div className='font-black font-extrabold text-center '>App</div>
+    <Body/>
   )
 }
 
