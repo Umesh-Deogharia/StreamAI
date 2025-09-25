@@ -6,14 +6,16 @@ import Footer from './Footer';
 import ValidData from '../utils/ValidData';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../utils/firebase"
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { adduser } from '../features/userSlice';
+import { useNavigate } from 'react-router-dom';
+import userIcon from '../assets/images/User-icon.jpeg'
+// import { PROFILE_AVATAR} from '../utils/constant';
 
 
 const Login = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isSignInForm, setSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const email = useRef(null);
@@ -37,41 +39,45 @@ const Login = () => {
       // Signup
       createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
         .then((userCredential) => {
-          // Signed up 
           const user = userCredential.user;
-          const {uid, email, displayName,photoURL} = auth;
-                          dispatch(adduser({uid:uid, email:email, displayName:displayName,photoURL}));
-
-          updateProfile(user, {
-            displayName: name.current.value, photoURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdp10ULpdkSWe1szCM5e70s2LK8j66DCTpQVWstkNmXEhyOfnhJT-f2UfyOigGfb5QBG0&usqp=CAU"
-          }).then(() => {
-            navigate("/browse");
-          }).catch((error) => {
-            <Error error={error} />
+          
+          // Update the user profile with display name and photo
+          return updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: userIcon
           });
-
-
-          console.log(user);
+        })
+        .then(() => {
+          // After profile is updated, get the latest user data
+          const user = auth.currentUser;
+          const { uid, email: userEmail, displayName, photoURL } = user;
+          
+          // Update Redux store with user info
+          dispatch(adduser({ uid, email: userEmail, displayName, photoURL }));
+          
+          // Navigate to browse page
+          navigate('/browse');
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          setErrorMessage(errorCode + " " + errorMessage)
+          setErrorMessage(errorCode + "-" + errorMessage);
         });
     } else {
       // Signin
       signInWithEmailAndPassword(auth, email.current.value, password.current.value)
         .then((userCredential) => {
-          // Signed in 
           const user = userCredential.user;
-          navigate("/browse");
-          console.log(user);
-          // ...
+          const { uid, email: userEmail, displayName, photoURL } = user;
+          // Update Redux store with user info
+          dispatch(adduser({ uid, email: userEmail, displayName, photoURL }));
+          // Navigate to browse page
+          navigate('/browse');
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          setErrorMessage(errorCode + " " + errorMessage)
+          setErrorMessage(errorCode + "-" + errorMessage);
         });
     }
   }

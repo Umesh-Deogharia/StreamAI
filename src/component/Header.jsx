@@ -1,22 +1,46 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import logo from "../assets/images/Logo.png"
 // import userIcon from "../assets/images/User-icon.jpeg"
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { auth } from '../utils/firebase';
+import { adduser, removeuser } from '../features/userSlice';
 
 
 
 const Header = () => {
   const user = useSelector(store => store.user);
-  console.log("user ==>>>>>>>>>", user);
+  // console.log("user ==>>>>>>>>>", user);
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/auth.user
+        const { uid, email, displayName, photoURL } = user;
+        dispatch(adduser({ uid: uid, email: email, displayName: displayName, photoURL }));
+        navigate('/browse');
+      } else {
+        // User is signed out
+        // ...
+        dispatch(removeuser());
+        navigate('/');
+      }
+    });
+    return () => unsubscribe();
+  }, [])
+
+
+
   function handleSignout() { 
     const auth = getAuth();
     signOut(auth).then(() => {
       // Sign-out successful.
-      navigate("/");
+      // navigate("/");
     }).catch((error) => {
       // An error happened.
       <Error error={error} />
