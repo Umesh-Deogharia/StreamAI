@@ -5,14 +5,19 @@ import { API_OPTIONS } from '../utils/constant'
 import useNowPlayingMovies from '../hooks/useNowPlayingMovies'
 import MainContainer from './MainContainer'
 import SecondaryContainer from './SecondaryContainer'
+import usePopularMovies from '../hooks/usePopularMovies '
+import useTopRatedMovies from '../hooks/useTopRatedMovies '
+import useUpcomingMovies from '../hooks/useUpcomingMovies '
 const Browse = () => {
-  useNowPlayingMovies()
+  useNowPlayingMovies();
+  usePopularMovies();
+  useTopRatedMovies();
+  useUpcomingMovies();
   return (
     <div>
       <Header />
       <MainContainer />
       <SecondaryContainer/>
-      Browse
     </div>
   )
 }

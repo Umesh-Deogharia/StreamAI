@@ -5,7 +5,7 @@ import { SlInfo } from "react-icons/sl";
 
 function VideoTitle({ title, overview }) {
   return (
-    <div className='pt-36 px-15 w-screen aspect-video  absolute bg-gradient-to-r from-black text-white'>
+    <div className='pt-36 px-15 w-full aspect-video  absolute bg-gradient-to-r from-black text-white'>
       <h1 className='text-5xl font-bold w-1/4'>{title}</h1>
       <p className='py-6 text-lg w-1/4'>{overview.slice(0,290)}</p>
       <div className='flex gap-2'>

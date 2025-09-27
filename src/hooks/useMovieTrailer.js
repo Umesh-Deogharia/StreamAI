@@ -11,7 +11,7 @@ function useMovieTrailer(movieId) {
         const json = await data.json();
         const filterData = json?.results?.filter(element => element.type == "Trailer");
         const trailer = filterData.length ? filterData[0] : json?.results[0]
-        console.log(trailer);
+        // console.log(trailer);
         dispatch(addtrailerVideo(trailer))
     }
     useEffect(() => {
@@ -19,5 +19,4 @@ function useMovieTrailer(movieId) {
     }, [])
     // console.log("trailerVideo",trailerVideo);
 }
-
 export default useMovieTrailer

@@ -1,23 +1,2 @@
 @import "tailwindcss";
 
-/*
-.w-full iframe {
-    pointer-events: none;
-}
-
-/* If the title appears as an overlay, this might help */
-/* iframe {
-    position: relative;
-} */
-
-/* iframe::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 60px; */
-    /* Adjust based on title height */
-    /* background: transparent;
-    z-index: 10; */
-/* } */
