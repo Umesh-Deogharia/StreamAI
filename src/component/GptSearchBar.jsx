@@ -71,18 +71,18 @@ function GptSearchBar() {
             <div className="bg-black inset-0 absolute opacity-65 h-full w-screen"></div>
 
             {/* Content */}
-            <div className="pt-40 m-auto flex w-10/12 flex-col absolute items-center h-full">
+            <div className="pt-40 m-auto flex  md:w-10/12 flex-col absolute h-full">
                 {/* Search Bar */}
-                <form className="flex mb-6 pt-20 md:pt-0">
+                <form className="flex md:flex-row flex-col mb-6 pt-20 md:pt-0 mx-0 md:mx-auto  items-center gap-2">
                     <input
                         type="text"
                         placeholder={lang[langKey].gptSearchPlaceholder}
                         ref={searchText}
                         onKeyDown={handleKeyDown}
-                        className="px-4 py-2 w-96 mx-2 bg-white border border-white rounded-lg"
+                        className="px-4 py-2 w-96 mx-auto bg-white border border-white rounded-lg"
                     />
                     <button
-                        className="py-2 px-4 bg-blue-400 rounded-lg"
+                        className="py-2 px-0 w-20 bg-blue-400 rounded-lg"
                         type="button"
                         onClick={handleGptSearchClick}
                     >

@@ -31,7 +31,7 @@ const Browse = () => {
   return (
     <div>
       <Header />
-      <button className='px-4 py-2 rounded-lg bg-red-500 text-white fixed bottom-8 right-4 z-50' onClick={handleGptSearchClick}>{gptSearchshow ? <FaHome /> : <RiRobot2Fill />}</button>
+      <button className='px-4 py-2 rounded-lg bg-red-500 fixed bottom-8 right-4 z-50 text-white' onClick={handleGptSearchClick}>{gptSearchshow ? <FaHome /> : <RiRobot2Fill />}</button>
       {showGptSearch ? <GptSearch /> : <> <MainContainer /> <SecondaryContainer /> </>}
     </div>
   )
