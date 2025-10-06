@@ -1,23 +1,102 @@
-import React from 'react';
+import React, {  useRef } from 'react';
 import BackgroundImg from "../assets/images/Background.jpg";
-import { useSelector } from 'react-redux';
-// import store from "../store/appstore"
+import { useDispatch, useSelector } from 'react-redux';
+import openai from "../utils/openai";
 import lang from '../utils/languageConstant';
+import { API_OPTIONS } from '../utils/constant';
+import { addGptMovieResult } from '../features/gptSlice';
+import GptMovieSuggestion from './GptMovieSuggestion';
+
 function GptSearchBar() {
-    const langKey = useSelector((store)=>store.config.lang);
-    console.log("lang=>>>",lang);
-    // console.log(lang);
+    const langKey = useSelector((store) => store.config.lang);
+    const searchText = useRef(null);
+    const dispatch = useDispatch();
+
+    // useEffect(() => {
+    //     if (searchText.current) {
+    //         console.log("searchText.current ==> ", searchText.current);
+    //         console.log("searchText.current.value ==> ", searchText.current.value);
+    //     }
+    // }, []);
+
+    const searchMovieTMDB = async (movie) => {
+        const data = await fetch(
+            'https://api.themoviedb.org/3/search/movie?query=' + movie + '&include_adult=false&language=en-US&page=1',
+            API_OPTIONS
+        );
+        const json = await data.json();
+        return json.results;
+    };
+
+    function handleKeyDown(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleGptSearchClick(e);
+        }
+    }
+
+    async function handleGptSearchClick(e) {
+        try {
+            if (e) e.preventDefault();
+
+            const gptQuery =
+                "Act as a movie recommendation system and suggest some movies from this query: " +
+                searchText.current.value +
+                " only give me names of 5 movies , comma separated like the example result given ahead. Example: Gadar, Sholay, Don, Golmaal, Koi Mil Gya";
+
+            const gptResults = await openai.chat.completions.create({
+                model: "gpt-4o-mini",
+                messages: [{ role: "user", content: gptQuery }],
+                max_tokens: 200,
+                temperature: 0.7,
+            });
+
+            const gptMovies = gptResults?.choices[0]?.message?.content.split(",");
+            const promiseArray = gptMovies.map((movie) => searchMovieTMDB(movie.trim()));
+            const tmdbResult = await Promise.all(promiseArray);
+
+            dispatch(addGptMovieResult({ movieNames: gptMovies, movieResults: tmdbResult }));
+            // console.log("GPT Movies:", gptMovies);
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
     return (
-        <section className='h-screen bg-cover bg-center -z-10 ' style={{backgroundImage: `url(${BackgroundImg})`}}>
-            <div className='bg-black inset-0 absolute opacity-65 h-full'></div>
-            <div className='pt-40 m-auto flex justify-center items-center  relative'>
-                <form action="">
-                    <input type="text" name="" id="" placeholder={lang[langKey].gptSearchPlaceholder} className='px-4 py-2 w-140 mx-4 bg-white border border-white rounded-lg' />
-                    <button className='py-2 px-4 bg-blue-400 rounded-lg' type='button'>{lang[langKey].search}</button>
+        <section
+            className="h-screen w-full bg-cover relative flex items-center justify-center"
+            style={{ backgroundImage: `url(${BackgroundImg})` }}
+        >
+            {/* Dark overlay */}
+            <div className="bg-black inset-0 absolute opacity-65 h-full w-screen"></div>
+
+            {/* Content */}
+            <div className="pt-40 m-auto flex w-10/12 flex-col absolute items-center h-full">
+                {/* Search Bar */}
+                <form className="flex mb-6 pt-20 md:pt-0">
+                    <input
+                        type="text"
+                        placeholder={lang[langKey].gptSearchPlaceholder}
+                        ref={searchText}
+                        onKeyDown={handleKeyDown}
+                        className="px-4 py-2 w-96 mx-2 bg-white border border-white rounded-lg"
+                    />
+                    <button
+                        className="py-2 px-4 bg-blue-400 rounded-lg"
+                        type="button"
+                        onClick={handleGptSearchClick}
+                    >
+                        {lang[langKey].search}
+                    </button>
                 </form>
+
+                {/* Results Section */}
+                <div className="flex-1 w-full overflow-y-auto px-4 pb-10 scrollbar-hide">
+                    <GptMovieSuggestion />
+                </div>
             </div>
         </section>
-    )
+    );
 }
 
-export default GptSearchBar
+export default GptSearchBar;

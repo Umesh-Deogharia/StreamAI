@@ -3,8 +3,12 @@ import { IMG_CDN_URL } from '../utils/constant';
 
 function MovieCard({ movies }) {
   // console.log(movies);
+  if (!movies.poster_path) {
+    return null
+  }
+  
   return (
-    <div className='w-40'>
+    <div className='w-30 md:w-40'>
       {/* {movies.forEach(element => 
             
             )} */}

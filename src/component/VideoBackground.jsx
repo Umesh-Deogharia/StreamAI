@@ -15,7 +15,6 @@ function VideoBackground({ movieId }) {
         referrerPolicy="strict-origin-when-cross-origin"
         allowFullScreen
       ></iframe>
-
     </div>
   )
 }

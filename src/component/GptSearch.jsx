@@ -6,7 +6,7 @@ function GptSearch() {
   return (
       <div>
           <GptSearchBar />
-          <GptMovieSuggestion/>
+          {/* <GptMovieSuggestion/> */}
     </div>
   )
 }

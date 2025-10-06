@@ -10,7 +10,7 @@ function SecondaryContainer() {
 
   return (
     <div className='bg-black'>
-      <div className='-mt-55 relative z-20 pl-15'>
+      <div className='mt-0 md:-mt-55 relative z-20 px-4 md:pl-15'>
         {movies && <MovieList title={"Now Playing"} movies={movies} />}
         {movies && <MovieList title={"Popular Movies"} movies={popularMovies} />}
         {movies && <MovieList title={"Top Rated Movies"} movies={topRatedMovies} />}

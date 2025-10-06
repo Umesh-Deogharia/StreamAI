@@ -4,7 +4,7 @@ const lang = {
         gptSearchPlaceholder: "What would you like to watch today?",
     },
     hindi: {
-        Search:"खोज",
+        search:"खोज",
         gptSearchPlaceholder:"आज आप क्या देखना चाहेंगे?"
     },
     beng: {
