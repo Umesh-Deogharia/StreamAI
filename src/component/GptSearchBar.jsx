@@ -89,7 +89,6 @@ function GptSearchBar() {
                         {lang[langKey].search}
                     </button>
                 </form>
-
                 {/* Results Section */}
                 <div className="flex-1 w-full overflow-y-auto px-4 pb-10 scrollbar-hide">
                     <GptMovieSuggestion />
