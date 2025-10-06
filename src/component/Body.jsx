@@ -1,8 +1,8 @@
 import React from 'react'
 import Browse from './Browse'
 import Header from './Header'
-import Login from './login'
-import {createBrowserRouter, RouterProvider} from "react-router-dom"
+import Login from './Login'
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
 // import {onAuthStateChanged } from "firebase/auth";
 // import { auth } from '../utils/firebase'
 // import { useDispatch } from 'react-redux'
@@ -12,24 +12,24 @@ const Body = () => {
     // const dispatch = useDispatch();
     const appProvider = createBrowserRouter([
         {
-            path:"/",
-            element: <Login/>,
+            path: "/",
+            element: <Login />,
         },
         {
-            path:"/browse",
+            path: "/browse",
             element: <Browse />,
         },
         {
-            path:"/header",
+            path: "/header",
             element: <Header />,
         }
     ])
 
-    
+
 
     return (
-      <RouterProvider router={appProvider}/>
-  )
+        <RouterProvider router={appProvider} />
+    )
 }
 
 export default Body
